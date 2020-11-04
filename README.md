@@ -2,7 +2,7 @@
 GraphQL is a query language for APIs. The query language itself is universal and not tied to any frontend or backend technology. This characteristic makes it a great choice for many frameworks or patterns you or your company might follow.
 
 
-# Basisc of GraphQl
+# Basics of GraphQL
 
     gem ‘graphql’
     gem ‘graphiql-rails’ add this one only in development group
