@@ -2,7 +2,7 @@
 GraphQL is a query language for APIs. The query language itself is universal and not tied to any frontend or backend technology. This characteristic makes it a great choice for many frameworks or patterns you or your company might follow.
 
 
-# Basisc Gems for GraphQl
+# Basisc of GraphQl
 
     gem ‘graphql’
     gem ‘graphiql-rails’ add this one only in development group
@@ -201,6 +201,72 @@ Result:
               "body": "Deserunt rerum hic. In aut nam. Quia ab exercitationem. Est excepturi et. Odio molestiae blanditiis."
             }
           ]
+        }
+      }
+    }
+    
+    
+Mutations#
+Most discussions of GraphQL focus on data fetching, but any complete data platform needs a way to modify server-side data as well.
+
+In REST, any request might end up causing some side-effects on the server, but by convention it's suggested that one doesn't use GET requests to modify data. GraphQL is similar - technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation.
+
+Just like in queries, if the mutation field returns an object type, you can ask for nested fields. This can be useful for fetching the new state of an object after an update. Let's look at a simple example mutation:
+
+I have crate a mutation for new user file create_user.rb under mutatiions directory
+
+    class Mutations::CreateUser < Mutations::BaseMutation
+      argument :name, String, required: true
+      argument :email, String, required: true
+
+      field :user, Types::UserType,null: false
+      field :error, [String], null: false
+
+      def resolve(name:, email:)
+        user = User.new(name: name,email: email)
+        if user.save!
+          {user: user, error: []}
+        else
+          {user: nil, error: user.errors.full_messages }
+        end
+      end
+    end
+    
+   To call mutation firstly we have to define it in mutation_type.rb under graphql/Types directory
+   like:
+
+    module Types
+      class MutationType < Types::BaseObject
+        field :create_user, mutation: Mutations::CreateUser
+        field :register_user, mutation: Mutations::RegisterUser
+      end
+    end
+Here I have declare two mutation for create_user and register_user. Now just simply need to call it 
+
+Query:
+
+    mutation {
+      createUser(input: {name: "Qasim Ali Zahid", email: "iamqasimali@gmail.com"}) {
+        user {
+          id
+          name
+          email
+        }
+        error
+      }
+    }
+
+Result:
+
+    {
+      "data": {
+        "createUser": {
+          "user": {
+            "id": "6",
+            "name": "Qasim Ali Zahid",
+            "email": "iamqasimali@gmail.com"
+          },
+          "error": []
         }
       }
     }
