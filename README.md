@@ -7,34 +7,34 @@ GraphQL is a query language for APIs. The query language itself is universal and
     gem ‘graphql’
     gem ‘graphiql-rails’ add this one only in development group
 
-GraphQL Gem: the most popular library for building GraphQL applications
-GraphiQL: An in-browser IDE for exploring GraphQL, which comes bundled with GraphQL Gem
+**GraphQL Gem:** the most popular library for building GraphQL applications
+**GraphiQL:** An in-browser IDE for exploring GraphQL, which comes bundled with GraphQL Gem
 
-When you set graphiql-rails only for developement then you have to also define it in routes.rb file
+> When you set graphiql-rails only for developement then you have to also define it in **routes.rb file**
 
         if Rails.env.development?
             mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql#execute"
         end
 
 
-Add these line to app/assets/config/manifest.js file which used for Graphiql: http://localhost:3000/graphiql 
+> Add these line to **app/assets/config/manifest.js** file which used for Graphiql: http://localhost:3000/graphiql 
 
     //= link graphiql/rails/application.css
     //= link graphiql/rails/application.js
 
 
 
-The Schema Definition Language (SDL):
+## The Schema Definition Language (SDL):
 GraphQL has its own type system that’s used to define the schema of an API. The syntax for writing schemas is called Schema Definition Language (SDL).
 
 
-After setup firstly you have to crate a type under app/graphql/Types
+After setup firstly you have to crate a type under **app/graphql/Types**
 Like if you have a model then you simply creat it type by entering the following command in console of you app directory
 i.e. you have USER model then type 
-    rails g graphql:object user
-this will generate a new type named as user_type.rb in app/graphql/Types containing all fields of model 
+        > rails g graphql:object user
+this will generate a new type named as **user_type.rb** in **app/graphql/Types** containing all fields of model 
 
-File 'user_type.rb'
+**File 'user_type.rb'**
 
     module Types
       class UserType < Types::BaseObject
@@ -46,7 +46,7 @@ File 'user_type.rb'
       end
     end
 
-You can also add new filed in your type like 
+> You can also add new filed in your type like 
 
     module Types
       class UserType < Types::BaseObject
@@ -64,7 +64,7 @@ You can also add new filed in your type like
       end
     end
 
-Then you have simple define you queries in query_type.rb file 
+> Then you have simple define you queries in **query_type.rb** file 
 
     module Types
       class QueryType < Types::BaseObject
@@ -84,7 +84,8 @@ Then you have simple define you queries in query_type.rb file
     end
 
 At its simplest, GraphQL is about asking for specific fields on objects. Let's start by looking at a very simple query and the result we get when we run it:
-Query:
+
+**Query:**
 
     {
       users {
@@ -94,7 +95,7 @@ Query:
       }
     }
 
-Result:
+**Result:**
 
     {
       "data": {
@@ -129,7 +130,7 @@ Result:
     }
 
 
-Query:
+**Query:**
 
     {
       user(id: 2) {
@@ -139,7 +140,7 @@ Query:
       }
     }
 
-result:
+**result:**
 
     {
       "data": {
@@ -151,7 +152,7 @@ result:
       }
     }
 
-Query:
+**Query:**
 
     {
       user(id: 2) {
@@ -166,7 +167,7 @@ Query:
       }
     }
 
-Result:
+**Result:**
 
     {
       "data": {
@@ -206,14 +207,15 @@ Result:
     }
     
     
-Mutations#
+## Mutations
+
 Most discussions of GraphQL focus on data fetching, but any complete data platform needs a way to modify server-side data as well.
 
 In REST, any request might end up causing some side-effects on the server, but by convention it's suggested that one doesn't use GET requests to modify data. GraphQL is similar - technically any query could be implemented to cause a data write. However, it's useful to establish a convention that any operations that cause writes should be sent explicitly via a mutation.
 
 Just like in queries, if the mutation field returns an object type, you can ask for nested fields. This can be useful for fetching the new state of an object after an update. Let's look at a simple example mutation:
 
-I have crate a mutation for new user file create_user.rb under mutatiions directory
+> I have crate a mutation for new user file **create_user.rb** under mutatiions directory
 
     class Mutations::CreateUser < Mutations::BaseMutation
       argument :name, String, required: true
@@ -232,7 +234,7 @@ I have crate a mutation for new user file create_user.rb under mutatiions direct
       end
     end
     
-   To call mutation firstly we have to define it in mutation_type.rb under graphql/Types directory
+  > To call mutation firstly we have to define it in **mutation_type.rb** under **graphql/Types directory**
    like:
 
     module Types
@@ -241,9 +243,9 @@ I have crate a mutation for new user file create_user.rb under mutatiions direct
         field :register_user, mutation: Mutations::RegisterUser
       end
     end
-Here I have declare two mutation for create_user and register_user. Now just simply need to call it 
+ > Here, I have declare two mutation for **create_user** and register_user. Now just simply need to call it 
 
-Query:
+**Query:**
 
     mutation {
       createUser(input: {name: "Qasim Ali Zahid", email: "iamqasimali@gmail.com"}) {
@@ -256,7 +258,7 @@ Query:
       }
     }
 
-Result:
+**Result:**
 
     {
       "data": {
