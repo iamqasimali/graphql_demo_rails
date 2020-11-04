@@ -3,22 +3,24 @@ GraphQL is a query language for APIs. The query language itself is universal and
 
 
 # Basisc Gems for GraphQl
-gem ‘graphql’
-gem ‘graphiql-rails’ add this one only in development group
+
+    gem ‘graphql’
+    gem ‘graphiql-rails’ add this one only in development group
 
 GraphQL Gem: the most popular library for building GraphQL applications
 GraphiQL: An in-browser IDE for exploring GraphQL, which comes bundled with GraphQL Gem
 
 When you set graphiql-rails only for developement then you have to also define it in routes.rb file
-if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql#execute"
-end
+
+        if Rails.env.development?
+            mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "graphql#execute"
+        end
 
 
 Add these line to app/assets/config/manifest.js file which used for Graphiql: http://localhost:3000/graphiql 
 
-//= link graphiql/rails/application.css
-//= link graphiql/rails/application.js
+    //= link graphiql/rails/application.css
+    //= link graphiql/rails/application.js
 
 
 
@@ -34,52 +36,52 @@ this will generate a new type named as user_type.rb in app/graphql/Types contain
 
 File 'user_type.rb'
 
-module Types
-  class UserType < Types::BaseObject
-    field :id, ID, null: false
-    field :email, String, null: true
-    field :name, String, null: true
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-  end
-end
+    module Types
+      class UserType < Types::BaseObject
+        field :id, ID, null: false
+        field :email, String, null: true
+        field :name, String, null: true
+        field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+        field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+      end
+    end
 
 You can also add new filed in your type like 
 
-module Types
-  class UserType < Types::BaseObject
-    field :id, ID, null: false
-    field :email, String, null: true
-    field :name, String, null: true
-    field :posts,[Types::PostType],null: true  // To get the post of the user
-    field :post_count, Integer, null: true
-    field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-    field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
+    module Types
+      class UserType < Types::BaseObject
+        field :id, ID, null: false
+        field :email, String, null: true
+        field :name, String, null: true
+        field :posts,[Types::PostType],null: true  // To get the post of the user
+        field :post_count, Integer, null: true
+        field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+        field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
-    def post_count
-      object.posts.size
+        def post_count
+          object.posts.size
+        end
+      end
     end
-  end
-end
 
 Then you have simple define you queries in query_type.rb file 
 
-module Types
-  class QueryType < Types::BaseObject
-    # Users
-    field :users, [Types::UserType], null: false
-    def users
-      User.all
+    module Types
+      class QueryType < Types::BaseObject
+        # Users
+        field :users, [Types::UserType], null: false
+        def users
+          User.all
+        end
+        # User
+        field :user, Types::UserType, null: false do
+          argument :id, ID, required: true
+        end
+        def user(id:)
+          User.find(id)
+        end
+      end
     end
-    # User
-    field :user, Types::UserType, null: false do
-      argument :id, ID, required: true
-    end
-    def user(id:)
-      User.find(id)
-    end
-  end
-end
 
 At its simplest, GraphQL is about asking for specific fields on objects. Let's start by looking at a very simple query and the result we get when we run it:
 
