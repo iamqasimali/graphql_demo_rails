@@ -84,8 +84,123 @@ Then you have simple define you queries in query_type.rb file
     end
 
 At its simplest, GraphQL is about asking for specific fields on objects. Let's start by looking at a very simple query and the result we get when we run it:
+Query:
+
+    {
+      users {
+        id
+        email
+        name
+      }
+    }
+
+Result:
+
+    {
+      "data": {
+        "users": [
+          {
+            "id": "1",
+            "email": "lizette_yundt@cruickshank-sanford.info",
+            "name": "Stanley Lockman"
+          },
+          {
+            "id": "2",
+            "email": "preston@brown-shields.org",
+            "name": "Renato Schultz"
+          },
+          {
+            "id": "3",
+            "email": "cory@mayert.io",
+            "name": "Myra Gaylord"
+          },
+          {
+            "id": "4",
+            "email": "dylan@metz-hammes.org",
+            "name": "Barbra Windler"
+          },
+          {
+            "id": "5",
+            "email": "ciara.cummings@kuphal-zboncak.io",
+            "name": "Cameron Bayer"
+          }
+        ]
+      }
+    }
 
 
+Query:
 
+    {
+      user(id: 2) {
+        id
+        email
+        postCount
+      }
+    }
 
+result:
 
+    {
+      "data": {
+        "user": {
+          "id": "2",
+          "email": "preston@brown-shields.org",
+          "postCount": 5
+        }
+      }
+    }
+
+Query:
+
+    {
+      user(id: 2) {
+        id
+        email
+        postCount
+        posts {
+          id
+          title
+          body
+        }
+      }
+    }
+
+Result:
+
+    {
+      "data": {
+        "user": {
+          "id": "2",
+          "email": "preston@brown-shields.org",
+          "postCount": 5,
+          "posts": [
+            {
+              "id": "6",
+              "title": "Beatae vel maiores.",
+              "body": "Odio praesentium soluta. Qui veritatis ut. Nisi veritatis consequatur. Unde enim numquam. Corporis nemo velit."
+            },
+            {
+              "id": "7",
+              "title": "Ab assumenda omnis.",
+              "body": "At eaque harum. Rerum voluptas perferendis. In sunt inventore. Voluptatum similique repudiandae. Qui quod doloribus."
+            },
+            {
+              "id": "8",
+              "title": "Rerum at occaecati.",
+              "body": "Debitis iure tempora. Sed voluptatem aut. Animi sed numquam. Quasi culpa sint. Sed eos asperiores."
+            },
+            {
+              "id": "9",
+              "title": "Assumenda repudiandae tempore.",
+              "body": "Omnis consequatur omnis. Velit et recusandae. Non quis provident. Animi consequatur quas. Qui rem quae."
+            },
+            {
+              "id": "10",
+              "title": "Consequatur temporibus praesentium.",
+              "body": "Deserunt rerum hic. In aut nam. Quia ab exercitationem. Est excepturi et. Odio molestiae blanditiis."
+            }
+          ]
+        }
+      }
+    }
