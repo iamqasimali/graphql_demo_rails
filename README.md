@@ -5,10 +5,12 @@ GraphQL is a query language for APIs. The query language itself is universal and
 # Basics of GraphQL
 
     gem ‘graphql’
-    gem ‘graphiql-rails’ add this one only in development group
+    gem ‘graphiql-rails’ #add this one only in development group
 
-**GraphQL Gem:** the most popular library for building GraphQL applications
-**GraphiQL:** An in-browser IDE for exploring GraphQL, which comes bundled with GraphQL Gem
+#### GraphQL Gem: 
+Most popular library for building applications with GraphQL.
+#### GraphiQL: 
+A browser IDE for exploring GraphQL, which comes bundled with GraphQL Gem.
 
 > When you set graphiql-rails only for developement then you have to also define it in **routes.rb file**
 
@@ -140,7 +142,7 @@ At its simplest, GraphQL is about asking for specific fields on objects. Let's s
       }
     }
 
-**result:**
+**Result:**
 
     {
       "data": {
